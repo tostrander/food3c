@@ -26,3 +26,15 @@ function validMeal($meal)
     $validMeals = getMeals();
     return in_array($meal, $validMeals);
 }
+
+/** validCondiments() returns true if all of the condiments are in the list of valid options */
+function validCondiments($selectedConds)
+{
+    $validConds = getCondiments();
+    foreach ($selectedConds as $selected) {
+        if (!in_array($selected, $validConds)) {
+            return false;
+        }
+    }
+    return true;
+}

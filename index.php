@@ -77,14 +77,24 @@ $f3->route('GET|POST /order2', function($f3) {
     //If the form has been submitted
     if ($_SERVER['REQUEST_METHOD']=='POST') {
 
-        //Add data from form2 to Session array
+        //Get data from form2 to Session array
         if(isset($_POST['conds'])) {
             $userCondiments = $_POST['conds'];
-            $_SESSION['conds'] = implode(", ", $userCondiments);
+
+            //Data is valid -> Add to session
+            if (validCondiments($userCondiments)) {
+                $_SESSION['conds'] = implode(", ", $userCondiments);
+            }
+            //Data is not valid -> We've been spoofed!
+            else {
+                $f3->set('errors["conds"]', "Go away, evildoer!");
+            }
         }
 
-        //Send user to summary page
-        $f3->reroute('/summary');
+        //If there are no errors, redirect user to summary page
+        if (empty($f3->get('errors'))) {
+            $f3->reroute('/summary');
+        }
     }
 
     $f3->set('condiments', getCondiments());
