@@ -37,7 +37,7 @@ $f3->route('GET|POST /order', function($f3) {
 
         //Get the data from the POST array
         $userFood = trim($_POST['food']);
-        $userMeal = trim($_POST['meal']);
+        $userMeal = $_POST['meal'];
 
         //If the data is valid --> Store in session
         if(validFood($userFood)) {
@@ -48,8 +48,11 @@ $f3->route('GET|POST /order', function($f3) {
             $f3->set('errors["food"]', "Food cannot be blank and must contain only characters");
         }
 
-        if(isset($_POST['meal'])) {
-            $_SESSION['meal'] = $_POST['meal'];
+        if(validMeal($userMeal)) {
+            $_SESSION['meal'] = $userMeal;
+        }
+        else {
+            $f3->set('errors["meal"]', "Select a meal");
         }
 
         //If there are no errors, redirect to /order2
