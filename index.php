@@ -30,29 +30,37 @@ $f3->route('GET /', function() {
 //Define an order route
 $f3->route('GET|POST /order', function($f3) {
 
-    //Add data from form1 to Session array
     //var_dump($_POST);
 
     //If the form has been submitted
     if ($_SERVER['REQUEST_METHOD']=='POST') {
-        if(validFood($_POST['food'])) {
-            $_SESSION['food'] = $_POST['food'];
+
+        //Get the data from the POST array
+        $userFood = trim($_POST['food']);
+        $userMeal = trim($_POST['meal']);
+
+        //If the data is valid --> Store in session
+        if(validFood($userFood)) {
+            $_SESSION['food'] = $userFood;
         }
+        //Data is not valid -> Set an error in F3 hive
         else {
-            $f3->set('errors["food"]', "Food cannot be blank");
+            $f3->set('errors["food"]', "Food cannot be blank and must contain only characters");
         }
+
         if(isset($_POST['meal'])) {
             $_SESSION['meal'] = $_POST['meal'];
         }
 
         //If there are no errors, redirect to /order2
         if(empty($f3->get('errors'))) {
-            $f3->reroute('/order2');
+            $f3->reroute('/order2');  //GET
         }
     }
 
     //var_dump($_POST);
     $f3->set('meals', getMeals());
+    $f3->set('userFood', isset($userFood) ? $userFood : "");
 
     //Display a view
     $view = new Template();
