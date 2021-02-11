@@ -77,8 +77,10 @@ $f3->route('GET|POST /order2', function($f3) {
     //If the form has been submitted
     if ($_SERVER['REQUEST_METHOD']=='POST') {
 
-        //Get data from form2 to Session array
+        //If condiments were selected
         if(isset($_POST['conds'])) {
+
+            //Get condiments from post array
             $userCondiments = $_POST['conds'];
 
             //Data is valid -> Add to session

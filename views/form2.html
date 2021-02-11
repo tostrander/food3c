@@ -6,8 +6,8 @@
         <form action="#" method="post" class="form-horizontal">
 
             <!-- get condiments -->
+            <check if="{{ @errors['conds'] }}"><span>{{ @errors['conds'] }}</span></check>
             <div class="form-group">
-                <check if="{{ @errors['conds'] }}">{{ @errors['conds'] }}</check>
                 <label class="col-sm-2 control-label">Select condiments</label>
                 <div class="col-sm-4">
                     <div class="col-sm-4">
