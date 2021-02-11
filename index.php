@@ -64,6 +64,7 @@ $f3->route('GET|POST /order', function($f3) {
     //var_dump($_POST);
     $f3->set('meals', getMeals());
     $f3->set('userFood', isset($userFood) ? $userFood : "");
+    $f3->set('userMeal', isset($userMeal) ? $userMeal : "");
 
     //Display a view
     $view = new Template();
@@ -73,9 +74,20 @@ $f3->route('GET|POST /order', function($f3) {
 //Define an order2 route
 $f3->route('GET|POST /order2', function($f3) {
 
+    //If the form has been submitted
+    if ($_SERVER['REQUEST_METHOD']=='POST') {
+
+        //Add data from form2 to Session array
+        if(isset($_POST['conds'])) {
+            $userCondiments = $_POST['conds'];
+            $_SESSION['conds'] = implode(", ", $userCondiments);
+        }
+
+        //Send user to summary page
+        $f3->reroute('/summary');
+    }
+
     $f3->set('condiments', getCondiments());
-
-
 
     //Display a view
     $view = new Template();
@@ -83,7 +95,7 @@ $f3->route('GET|POST /order2', function($f3) {
 });
 
 //Define a summary route
-$f3->route('POST /summary', function() {
+$f3->route('GET /summary', function() {
 
     //echo "<p>POST:</p>";
     //var_dump($_POST);
@@ -91,14 +103,14 @@ $f3->route('POST /summary', function() {
     //echo "<p>SESSION:</p>";
     //var_dump($_SESSION);
 
-    //Add data from form2 to Session array
-    if(isset($_POST['conds'])) {
-        $_SESSION['conds'] = implode(", ", $_POST['conds']);
-    }
-
     //Display a view
     $view = new Template();
     echo $view->render('views/summary.html');
+
+    //Write to database
+
+    //Clear the SESSION array
+    session_destroy();
 });
 
 //Run Fat-Free
