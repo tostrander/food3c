@@ -5,18 +5,22 @@
  *
  */
 
-/** getMeals() returns an array of meals
- *  @return array
- */
-function getMeals()
+class DataLayer
 {
-    return array("breakfast", "2nd breakfast", "lunch", "dinner");
+    /** getMeals() returns an array of meals
+     *  @return array
+     */
+    function getMeals()
+    {
+        return array("breakfast", "2nd breakfast", "lunch", "dinner");
+    }
+
+    /** getCondiments() returns an array of condiments
+     *  @return array
+     */
+    function getCondiments()
+    {
+        return array("ketchup", "mustard", "kim chi", "sriracha", "mayo");
+    }
 }
 
-/** getCondiments() returns an array of condiments
- *  @return array
- */
-function getCondiments()
-{
-    return array("ketchup", "mustard", "kim chi", "sriracha", "mayo");
-}

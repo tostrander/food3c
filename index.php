@@ -10,11 +10,11 @@ session_start();
 
 //Require files
 require_once('vendor/autoload.php');
-require_once('model/data-layer.php');
 
 //Instantiate my classes
 $f3 = Base::instance();
 $validator = new Validate();
+$dataLayer = new DataLayer();
 
 //Turn on Fat-Free error reporting
 $f3->set('DEBUG', 3);
@@ -32,6 +32,7 @@ $f3->route('GET|POST /order', function($f3) {
 
     //var_dump($_POST);
     global $validator;
+    global $dataLayer;
 
     //If the form has been submitted
     if ($_SERVER['REQUEST_METHOD']=='POST') {
@@ -63,7 +64,7 @@ $f3->route('GET|POST /order', function($f3) {
     }
 
     //var_dump($_POST);
-    $f3->set('meals', getMeals());
+    $f3->set('meals', $dataLayer->getMeals());
     $f3->set('userFood', isset($userFood) ? $userFood : "");
     $f3->set('userMeal', isset($userMeal) ? $userMeal : "");
 
@@ -76,6 +77,7 @@ $f3->route('GET|POST /order', function($f3) {
 $f3->route('GET|POST /order2', function($f3) {
 
     global $validator;
+    global $dataLayer;
 
     //If the form has been submitted
     if ($_SERVER['REQUEST_METHOD']=='POST') {
@@ -102,7 +104,7 @@ $f3->route('GET|POST /order2', function($f3) {
         }
     }
 
-    $f3->set('condiments', getCondiments());
+    $f3->set('condiments', $dataLayer->getCondiments());
 
     //Display a view
     $view = new Template();
