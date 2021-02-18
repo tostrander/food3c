@@ -11,10 +11,10 @@ session_start();
 //Require files
 require_once('vendor/autoload.php');
 require_once('model/data-layer.php');
-require_once('model/validate.php');
 
-//Instantiate Fat-Free
+//Instantiate my classes
 $f3 = Base::instance();
+$validator = new Validate();
 
 //Turn on Fat-Free error reporting
 $f3->set('DEBUG', 3);
@@ -31,6 +31,7 @@ $f3->route('GET /', function() {
 $f3->route('GET|POST /order', function($f3) {
 
     //var_dump($_POST);
+    global $validator;
 
     //If the form has been submitted
     if ($_SERVER['REQUEST_METHOD']=='POST') {
@@ -40,7 +41,7 @@ $f3->route('GET|POST /order', function($f3) {
         $userMeal = $_POST['meal'];
 
         //If the data is valid --> Store in session
-        if(validFood($userFood)) {
+        if($validator->validFood($userFood)) {
             $_SESSION['food'] = $userFood;
         }
         //Data is not valid -> Set an error in F3 hive
@@ -48,7 +49,7 @@ $f3->route('GET|POST /order', function($f3) {
             $f3->set('errors["food"]', "Food cannot be blank and must contain only characters");
         }
 
-        if(validMeal($userMeal)) {
+        if($validator->validMeal($userMeal)) {
             $_SESSION['meal'] = $userMeal;
         }
         else {
@@ -74,6 +75,8 @@ $f3->route('GET|POST /order', function($f3) {
 //Define an order2 route
 $f3->route('GET|POST /order2', function($f3) {
 
+    global $validator;
+
     //If the form has been submitted
     if ($_SERVER['REQUEST_METHOD']=='POST') {
 
@@ -84,7 +87,7 @@ $f3->route('GET|POST /order2', function($f3) {
             $userCondiments = $_POST['conds'];
 
             //Data is valid -> Add to session
-            if (validCondiments($userCondiments)) {
+            if ($validator->validCondiments($userCondiments)) {
                 $_SESSION['conds'] = implode(", ", $userCondiments);
             }
             //Data is not valid -> We've been spoofed!
