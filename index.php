@@ -5,16 +5,17 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-//Start a session
-session_start();
-
 //Require files
 require_once('vendor/autoload.php');
+
+//Start a session
+session_start();
 
 //Instantiate my classes
 $f3 = Base::instance();
 $validator = new Validate();
 $dataLayer = new DataLayer();
+$order = new Order();
 
 //Turn on Fat-Free error reporting
 $f3->set('DEBUG', 3);
@@ -33,6 +34,7 @@ $f3->route('GET|POST /order', function($f3) {
     //var_dump($_POST);
     global $validator;
     global $dataLayer;
+    global $order;
 
     //If the form has been submitted
     if ($_SERVER['REQUEST_METHOD']=='POST') {
@@ -43,7 +45,7 @@ $f3->route('GET|POST /order', function($f3) {
 
         //If the data is valid --> Store in session
         if($validator->validFood($userFood)) {
-            $_SESSION['food'] = $userFood;
+            $order->setFood($userFood);
         }
         //Data is not valid -> Set an error in F3 hive
         else {
@@ -51,7 +53,7 @@ $f3->route('GET|POST /order', function($f3) {
         }
 
         if($validator->validMeal($userMeal)) {
-            $_SESSION['meal'] = $userMeal;
+            $order->setMeal($userMeal);
         }
         else {
             $f3->set('errors["meal"]', "Select a meal");
@@ -59,6 +61,7 @@ $f3->route('GET|POST /order', function($f3) {
 
         //If there are no errors, redirect to /order2
         if(empty($f3->get('errors'))) {
+            $_SESSION['order'] = $order;
             $f3->reroute('/order2');  //GET
         }
     }
@@ -90,7 +93,8 @@ $f3->route('GET|POST /order2', function($f3) {
 
             //Data is valid -> Add to session
             if ($validator->validCondiments($userCondiments)) {
-                $_SESSION['conds'] = implode(", ", $userCondiments);
+                $condimentString = implode(", ", $userCondiments);
+                $_SESSION['order']->setCondiments($condimentString);
             }
             //Data is not valid -> We've been spoofed!
             else {
@@ -117,8 +121,8 @@ $f3->route('GET /summary', function() {
     //echo "<p>POST:</p>";
     //var_dump($_POST);
 
-    //echo "<p>SESSION:</p>";
-    //var_dump($_SESSION);
+    echo "<p>SESSION:</p>";
+    var_dump($_SESSION);
 
     //Display a view
     $view = new Template();
