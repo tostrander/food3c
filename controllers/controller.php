@@ -116,8 +116,14 @@ class Controller
 
         //Write to database
         global $dataLayer;
+        /*
         global $order;
-        $dataLayer->saveOrder($order);
+        echo "<p>Order object</p>";
+        var_dump($order);
+        echo "<p>SESSION Order object</p>";
+        var_dump($_SESSION['order']);
+        */
+        $dataLayer->saveOrder($_SESSION['order']);
 
         //$GLOBALS['dataLayer']->saveOrder();
 
@@ -127,5 +133,14 @@ class Controller
 
         //Clear the SESSION array
         session_destroy();
+    }
+
+    function orderSummary()
+    {
+        $orders = $GLOBALS['dataLayer']->getOrders();
+        $this->_f3->set('orders', $orders);
+        //Display a view
+        $view = new Template();
+        echo $view->render('views/order-summary.html');
     }
 }

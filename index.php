@@ -11,6 +11,7 @@ require $_SERVER['DOCUMENT_ROOT'].'/../config.php';
 
 //Start a session
 session_start();
+//var_dump($_SESSION);
 
 //Instantiate my classes
 $f3 = Base::instance();
@@ -49,6 +50,13 @@ $f3->route('GET /summary', function() {
 
     global $controller;
     $controller->summary();
+});
+
+//Define an order summary route
+$f3->route('GET /order-summary', function() {
+
+    global $controller;
+    $controller->orderSummary();
 });
 
 //Run Fat-Free

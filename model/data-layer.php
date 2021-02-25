@@ -14,6 +14,26 @@ class DataLayer
         $this->_dbh = $dbh;
     }
 
+    /* Return all of the rows in the db orders table */
+    function getOrders()
+    {
+        //Define the query
+        $sql = "SELECT * FROM orders";
+
+        //Prepare the statement
+        $statement = $this->_dbh->prepare($sql);
+
+        //Bind the parameters
+
+        //Execute
+        $statement->execute();
+
+        //Get the results
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        //var_dump($result);
+        return $result;
+    }
+
     function saveOrder($order)
     {
         var_dump($order);
@@ -25,20 +45,16 @@ class DataLayer
 
         //Prepare the statement
         $statement = $this->_dbh->prepare($sql);
-/*
+
         //Bind the parameters
-        $type = 'kangaroo';
-        $name = 'Joey';
-        $color = 'purple';
-        $statement->bindParam(':type', $type, PDO::PARAM_STR);
-        $statement->bindParam(':name', $name, PDO::PARAM_STR);
-        $statement->bindParam(':color', $color, PDO::PARAM_STR);
+        $condString = implode(", ", $order->getCondiments());
+        $statement->bindParam(':food', $order->getFood(), PDO::PARAM_STR);
+        $statement->bindParam(':meal', $order->getMeal(), PDO::PARAM_STR);
+        $statement->bindParam(':condiments', $condString, PDO::PARAM_STR);
 
         //Execute
         $statement->execute();
-        $id = $dbh->lastInsertId();
-        echo "<p>kangaroo added:  ID $id!</p>";
-*/
+        $id = $this->_dbh->lastInsertId();
     }
 
     /** getMeals() returns an array of meals
