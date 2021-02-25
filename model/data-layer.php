@@ -36,7 +36,7 @@ class DataLayer
 
     function saveOrder($order)
     {
-        var_dump($order);
+        //var_dump($order);
         //echo "<p>Saving order</p>";
 
         //Define the query
@@ -47,10 +47,9 @@ class DataLayer
         $statement = $this->_dbh->prepare($sql);
 
         //Bind the parameters
-        $condString = implode(", ", $order->getCondiments());
         $statement->bindParam(':food', $order->getFood(), PDO::PARAM_STR);
         $statement->bindParam(':meal', $order->getMeal(), PDO::PARAM_STR);
-        $statement->bindParam(':condiments', $condString, PDO::PARAM_STR);
+        $statement->bindParam(':condiments', $order->getCondiments(), PDO::PARAM_STR);
 
         //Execute
         $statement->execute();
