@@ -7,14 +7,16 @@ error_reporting(E_ALL);
 
 //Require files
 require_once('vendor/autoload.php');
+require $_SERVER['DOCUMENT_ROOT'].'/../config.php';
 
 //Start a session
 session_start();
 
 //Instantiate my classes
 $f3 = Base::instance();
-$validator = new Validate();
-$dataLayer = new DataLayer();
+$dataLayer = new DataLayer($dbh);
+$validator = new Validate($dataLayer);
+
 $order = new Order();
 $controller = new Controller($f3);
 
@@ -29,14 +31,14 @@ $f3->route('GET /', function() {
 });
 
 //Define an order route
-$f3->route('GET|POST /order', function($f3) {
+$f3->route('GET|POST /order', function() {
 
     global $controller;
     $controller->order();
 });
 
 //Define an order2 route
-$f3->route('GET|POST /order2', function($f3) {
+$f3->route('GET|POST /order2', function() {
 
     global $controller;
     $controller->order2();

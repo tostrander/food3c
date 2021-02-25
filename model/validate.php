@@ -8,9 +8,9 @@ class Validate
 {
     private $_dataLayer;
 
-    function __construct()
+    function __construct($dataLayer)
     {
-        $this->_dataLayer = new DataLayer();
+        $this->_dataLayer = $dataLayer;
     }
 
     /** validFood() returns true if food is not empty and

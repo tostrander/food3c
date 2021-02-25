@@ -67,9 +67,9 @@ class Controller
         echo $view->render('views/form1.html');
     }
 
+    //Condiments
     function order2()
     {
-
         global $validator;
         global $dataLayer;
 
@@ -108,18 +108,22 @@ class Controller
 
     function summary()
     {
-
         //echo "<p>POST:</p>";
         //var_dump($_POST);
 
-        echo "<p>SESSION:</p>";
-        var_dump($_SESSION);
+        //echo "<p>SESSION:</p>";
+        //var_dump($_SESSION);
+
+        //Write to database
+        global $dataLayer;
+        global $order;
+        $dataLayer->saveOrder($order);
+
+        //$GLOBALS['dataLayer']->saveOrder();
 
         //Display a view
         $view = new Template();
         echo $view->render('views/summary.html');
-
-        //Write to database
 
         //Clear the SESSION array
         session_destroy();
