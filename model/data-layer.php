@@ -71,5 +71,29 @@ class DataLayer
     {
         return array("ketchup", "mustard", "kim chi", "sriracha", "mayo");
     }
+
+    /** lookup() looks up a $food in the DB
+     *  Used by an Ajax call
+     *  prints 1 if found and 0 if not found
+     *  @param string the food item
+     */
+    function lookup($food)
+    {
+        //Define the query
+        $sql = "SELECT * FROM food WHERE food_name = :food";
+
+        //Prepare the statement
+        $statement = $this->_dbh->prepare($sql);
+
+        //Bind the parameters
+        $statement->bindParam(':food', $food, PDO::PARAM_STR);
+
+        //Execute
+        $statement->execute();
+
+        //Print the result (return to Ajax call)
+        $count = $statement->rowCount();
+        echo $count > 0 ? 1 : 0;
+    }
 }
 

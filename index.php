@@ -59,5 +59,11 @@ $f3->route('GET /order-summary', function() {
     $controller->orderSummary();
 });
 
+$f3->route('POST /lookup', function() {
+
+    global $controller;
+    $controller->lookup();
+});
+
 //Run Fat-Free
 $f3->run();

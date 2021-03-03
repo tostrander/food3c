@@ -143,4 +143,12 @@ class Controller
         $view = new Template();
         echo $view->render('views/order-summary.html');
     }
+
+    function lookup()
+    {
+        if (isset($_POST['food'])) {
+            $GLOBALS['dataLayer']->lookup($_POST['food']);
+        }
+
+    }
 }

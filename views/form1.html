@@ -1,4 +1,5 @@
 <include href="views/header.html"></include>
+
 <body>
     <div class="container">
     <h1>Food Order</h1>
@@ -6,11 +7,13 @@
 
         <div class="form-group">
             <label>What would you like to order?
-                <input type="text" name ="food" value="{{ @userFood }}">
+                <input type="text" name ="food" id="food" value="{{ @userFood }}">
                 <check if="{{ isset(@errors['food']) }}">
                     {{ @errors['food'] }}
                 </check>
             </label>
+            <!-- Add span -->
+            <span id="food-message">Food is not available</span>
         </div>
 
         <!-- get meal -->
@@ -35,5 +38,8 @@
         <input type="submit" value="Next >>">
     </form>
     </div>
+
+    <!-- Link to JS file -->
+    <script src="scripts/food-script.js"></script>
 </body>
 </html>
